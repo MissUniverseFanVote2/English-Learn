@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WAI'S ENGLISH LEARNING ACADEMY</title>
+<style>
+:root{
+ --primary:#7056d9;--primary2:#9279ed;--bg:#f5f4fc;
+ --card:#fff;--text:#292641;--muted:#85819d;
+ --border:#e8e4f3;--soft:#f0edff;--green:#1d9b70;
+}
+body.dark{
+ --bg:#171525;--card:#242137;--text:#f5f2ff;
+ --muted:#aaa4c1;--border:#39334f;--soft:#342d50;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,"Noto Sans Myanmar",sans-serif}
+header{height:68px;background:var(--card);border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 20px;position:sticky;top:0;z-index:10}
+.brand{font-size:15px;font-weight:900;color:var(--primary)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button.primary{background:var(--primary);color:white;border:0;
+ border-radius:9px;padding:11px 16px}
+button.soft{background:var(--soft);color:var(--primary);border:0;
+ border-radius:9px;padding:10px 13px}
+button.danger{background:#ffe9e9;color:#bd3434;border:0;
+ border-radius:9px;padding:9px 12px}
+.layout{display:flex;min-height:calc(100vh - 68px)}
+aside{width:245px;background:var(--card);border-right:1px solid var(--border);
+ padding:15px;flex-shrink:0}
+nav button{display:block;width:100%;text-align:left;padding:12px;
+ border:0;border-radius:9px;background:none;color:var(--text);margin:3px 0}
+nav button.active,nav button:hover{background:var(--soft);color:var(--primary)}
+nav h5{color:var(--muted);margin:20px 9px 7px}
+main{padding:23px;max-width:1400px;width:100%;min-width:0;margin:auto}
+.hero{background:linear-gradient(120deg,#5140bb,#9d7df1);
+ color:white;padding:30px;border-radius:18px;margin-bottom:20px}
+.hero h1{font-size:clamp(22px,4vw,34px);margin:0 0 10px}
+.hero p{line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--border);
+ border-radius:14px;padding:17px;margin-bottom:13px}
+.stat strong{display:block;color:var(--primary);font-size:27px;margin:8px 0}
+.muted{color:var(--muted);font-size:13px;line-height:1.7}
+.tag{display:inline-block;background:var(--soft);color:var(--primary);
+ border-radius:30px;padding:5px 9px;font-size:11px}
+input,select,textarea{width:100%;padding:11px;border-radius:9px;
+ border:1px solid var(--border);background:var(--card);color:var(--text)}
+textarea{min-height:100px;resize:vertical}
+label{display:block;font-size:13px;margin:12px 0 6px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1}
+.toolbar{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin:15px 0}
+.article{cursor:pointer;transition:.15s}
+.article:hover{border-color:var(--primary);transform:translateY(-2px)}
+.article h3{margin:9px 0}
+.bilingual{background:var(--card);border:1px solid var(--border);
+ border-radius:10px;padding:13px;margin:10px 0;line-height:1.8}
+.translation{color:var(--muted);margin-top:5px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:11px;border:1px solid var(--border);text-align:left}
+th{background:var(--soft)}
+.progress{height:8px;background:var(--soft);border-radius:20px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--primary)}
+.page{display:none}.page.active{display:block}
+.pagination{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:20px}
+.pagination button{border:1px solid var(--border);background:var(--card);
+ color:var(--text);padding:8px 12px;border-radius:8px}
+.pagination button.active{background:var(--primary);color:white}
+.notice{padding:12px;background:var(--soft);border-radius:9px;
+ color:var(--primary);line-height:1.7;margin:12px 0}
+footer{text-align:center;padding:25px;color:var(--muted)}
+#menuBtn{display:none}
+@media(max-width:800px){
+ .layout{display:block}aside{display:none;width:100%}
+ aside.open{display:block}#menuBtn{display:inline-block}
+ main{padding:13px}.toolbar{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">🎓 WAI'S ENGLISH LEARNING ACADEMY</div>
+ <div class="row" style="flex:initial">
+  <button id="menuBtn" class="soft" onclick="toggleMenu()">☰</button>
+  <button class="soft" onclick="toggleDark()">🌙</button>
+ </div>
+</header>
+
+<div class="layout">
+<aside id="sidebar">
+<nav>
+<h5>MAIN MENU</h5>
+<button class="active" onclick="showPage('home',this)">🏠 Home</button>
+<button onclick="showPage('dashboard',this)">📊 Dashboard</button>
+<h5>CONTENT ROOMS</h5>
+<button onclick="showRoom('knowledge',this)">🌍 Knowledge Room</button>
+<button onclick="showRoom('reading',this)">📖 Reading Room</button>
+<button onclick="showRoom('stories',this)">📚 Story Room</button>
+<h5>CONTENT MANAGEMENT</h5>
+<button onclick="showPage('add',this)">✍️ Add Full Article</button>
+<button onclick="showPage('manage',this)">🗂️ Manage Articles</button>
+<button onclick="showPage('import',this)">📥 Import / Export</button>
+<h5>LEARNING TOOLS</h5>
+<button onclick="showPage('bookmarks',this)">🔖 Bookmarks</button>
+<button onclick="showPage('certificates',this)">🏆 Certificates</button>
+</nav>
+</aside>
+<main id="main">
+
+<section id="home" class="page active">
+ <div class="hero">
+  <span class="tag" style="background:#ffffff30;color:white">15,000 CONTENT LIBRARY</span>
+  <h1>Welcome to WAI'S ENGLISH LEARNING ACADEMY</h1>
+  <p>Learn English, explore knowledge, read interesting articles
+  and enjoy stories with English and Burmese translations.</p>
+  <button class="primary" style="background:white;color:#5d47bd"
+   onclick="showRoom('knowledge')">Explore Knowledge Room →</button>
+ </div>
+ <div class="grid" id="homeStats"></div>
+ <h2>Learning Rooms</h2>
+ <div class="grid">
+  <div class="card article" onclick="showRoom('knowledge')">
+   <h2>🌍 Knowledge Room</h2><h3>5,000 Articles</h3>
+   <p class="muted">Science, history, geography, nature, technology and more.</p>
+  </div>
+  <div class="card article" onclick="showRoom('reading')">
+   <h2>📖 Reading Room</h2><h3>5,000 Readings</h3>
+   <p class="muted">2,500 Basic and 2,500 Advanced readings.</p>
+  </div>
+  <div class="card article" onclick="showRoom('stories')">
+   <h2>📚 Story Room</h2><h3>5,000 Stories</h3>
+   <p class="muted">2,500 Basic and 2,500 Advanced stories.</p>
+  </div>
+ </div>
+ <div class="notice">မှတ်ချက် — စာရင်းထဲရှိ Content Slot များကို အမှန်တကယ်ရေးသားထားသော ဆောင်းပါးများဖြင့် ဖြည့်သွင်းရန် လိုအပ်ပါသည်။</div>
+</section>
+
+<section id="dashboard" class="page">
+ <h1>📊 Learning Dashboard</h1>
+ <div class="grid" id="dashboardStats"></div>
+ <div class="card">
+  <h3>Content Completion</h3>
+  <div id="completion"></div>
+ </div>
+</section>
+
+<section id="room" class="page">
+ <h1 id="roomTitle">Knowledge Room</h1>
+ <p id="roomDesc" class="muted"></p>
+ <div class="toolbar">
+  <input id="search" placeholder="Search article title..." oninput="renderList(1)">
+  <select id="levelFilter" onchange="renderList(1)">
+   <option value="">All Levels</option>
+   <option>Basic</option><option>Advanced</option>
+  </select>
+  <select id="categoryFilter" onchange="renderList(1)">
+   <option value="">All Categories</option>
+  </select>
+ </div>
+ <div class="row">
+  <span id="resultCount" class="muted"></span>
+  <select id="sortFilter" onchange="renderList(1)" style="max-width:180px">
+   <option value="id">ID Order</option>
+   <option value="title">Title A-Z</option>
+  </select>
+ </div>
+ <div id="articleList" class="grid"></div>
+ <div id="pagination" class="pagination"></div>
+</section>
+
+<section id="viewer" class="page">
+ <button class="soft" onclick="backToRoom()">← Back to Articles</button>
+ <div id="articleContent"></div>
+</section>
+
+<section id="add" class="page">
+ <h1>✍️ Add Full Article</h1>
+ <p class="muted">ဆောင်းပါးအသစ်တစ်ပုဒ်ကို English နှင့် မြန်မာဘာသာပြန်တွဲ၍ ထည့်သွင်းပါ။</p>
+ <div class="card">
+  <label>Room</label>
+  <select id="newRoom" onchange="updateCategories()">
+   <option value="knowledge">Knowledge Room</option>
+   <option value="reading">Reading Room</option>
+   <option value="stories">Story Room</option>
+  </select>
+  <label>Category</label><select id="newCategory"></select>
+  <label>Level</label>
+  <select id="newLevel">
+   <option>Basic</option><option>Advanced</option>
+  </select>
+  <label>Article Title</label><input id="newTitle" placeholder="Enter English title">
+  <label>Short Description</label><textarea id="newDesc"></textarea>
+  <label>English Article</label>
+  <textarea id="newEnglish" placeholder="Write your English article here..."></textarea>
+  <label>Burmese Translation</label>
+  <textarea id="newBurmese" placeholder="မြန်မာဘာသာပြန်ကို ဤနေရာတွင်ရေးပါ..."></textarea>
+  <div class="notice">English နှင့် မြန်မာစာကို စာကြောင်းတစ်ကြောင်းချင်း တွဲရေးရန် အကြံပြုပါတယ်။ အောက်တွင် Vocabulary နှင့် Grammar ကိုလည်း ထပ်ထည့်နိုင်ပါတယ်။</div>
+  <label>Vocabulary (JSON format)</label>
+  <textarea id="newVocab" placeholder='[{"word":"Knowledge","pronunciation":"နော်လစ်ဂျ်","meaning":"အသိပညာ"}]'></textarea>
+  <label>Grammar Notes</label><textarea id="newGrammar"></textarea>
+  <label>Memorize Notes</label><textarea id="newRemember"></textarea>
+  <label>Exercises / Questions</label><textarea id="newExercise"></textarea>
+  <button class="primary" onclick="saveArticle()">Save Article</button>
+ </div>
+</section>
+
+<section id="manage" class="page">
+ <h1>🗂️ Manage Articles</h1>
+ <p class="muted">ရေးသားပြီးသား ဆောင်းပါးများကို စီမံခန့်ခွဲရန်။</p>
+ <input id="manageSearch" placeholder="Search by title or ID..." oninput="renderManage()">
+ <div id="manageList"></div>
+</section>
+
+<section id="import" class="page">
+ <h1>📥 Import / Export Content</h1>
+ <div class="card">
+  <h3>Import JSON Content Pack</h3>
+  <p class="muted">JSON ဖိုင်ထဲတွင် articles array ပါဝင်ရပါမည်။</p>
+  <input type="file" id="jsonFile" accept=".json,application/json">
+  <button class="primary" onclick="importJSON()">Import JSON</button>
+ </div>
+ <div class="card">
+  <h3>Export All Articles</h3>
+  <p class="muted">ထည့်သွင်းပြီးသား ဆောင်းပါးများကို JSON ဖိုင်အဖြစ် သိမ်းနိုင်သည်။</p>
+  <button class="primary" onclick="exportJSON()">Download JSON</button>
+ </div>
+ <div class="card">
+  <h3>Content Pack Format</h3>
+  <pre style="white-space:pre-wrap;overflow-wrap:anywhere">{
+ "articles":[{
+  "id":"R00001",
+  "room":"reading",
+  "category":"Basic Reading",
+  "level":"Basic",
+  "title":"My First Reading",
+  "desc":"A sample article",
+  "sections":[
+   {"en":"English sentence.","my":"မြန်မာဘာသာပြန်။"}
+  ],
+  "vocab":[
+   {"word":"Learn","pronunciation":"လန်း","meaning":"သင်ယူသည်"}
+  ],
+  "grammar":"Grammar explanation",
+  "remember":"Important notes",
+  "exercise":"Practice questions"
+ }]
+}</pre>
+ </div>
+</section>
+
+<section id="bookmarks" class="page">
+ <h1>🔖 Bookmarks</h1><div id="bookmarkList"></div>
+</section>
+
+<section id="certificates" class="page">
+ <h1>🏆 Certificates</h1>
+ <div class="card">
+  <label>Learner Name</label><input id="certName" placeholder="Enter learner name">
+  <label>Course Completed</label><input id="certCourse" placeholder="English Learning Course">
+  <label>CEFR Level</label>
+  <select id="certLevel"><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option></select>
+  <button class="primary" onclick="makeCertificate()">Generate Certificate</button>
+ </div>
+ <div id="certificate"></div>
+</section>
+</main>
+</div>
+<footer>WAI'S ENGLISH LEARNING ACADEMY · LEARN · DISCOVER · GROW</footer>
+
+<script>
+/* 1. CONTENT TARGETS */
+const targets={knowledge:5000,reading:5000,stories:5000};
+
+const knowledgeCategories=[
+ ["Space & Universe",400],
+ ["World History",400],
+ ["Countries & Geography",500],
+ ["Science & Physics",400],
+ ["Biology & Human Body",350],
+ ["Animals & Wildlife",450],
+ ["Ocean & Marine Life",300],
+ ["Technology & Inventions",400],
+ ["Psychology",300],
+ ["Great Leaders & Scientists",400],
+ ["Myanmar Knowledge",300],
+ ["Environment & Nature",300],
+ ["Culture & Civilization",300],
+ ["General Knowledge",200]
+];
+
+const readingCategories=[
+ ["Basic Reading",2500],
+ ["Advanced Reading",2500]
+];
+
+const storyCategories=[
+ ["Basic Stories",2500],
+ ["Advanced Stories",2500]
+];
+
+/* 2. DATABASE */
+let articles=JSON.parse(localStorage.getItem("wai_articles")||"[]");
+let bookmarks=JSON.parse(localStorage.getItem("wai_bookmarks")||"[]");
+let completed=JSON.parse(localStorage.getItem("wai_completed")||"[]");
+let currentRoom="knowledge";
+let currentArticle=null;
+let currentPage=1;
+const pageSize=24;
+
+function persist(){
+ localStorage.setItem("wai_articles",JSON.stringify(articles));
+ localStorage.setItem("wai_bookmarks",JSON.stringify(bookmarks));
+ localStorage.setItem("wai_completed",JSON.stringify(completed));
+}
+function uid(room){
+ const prefix=room==="knowledge"?"K":room==="reading"?"R":"S";
+ return prefix+Date.now().toString(36).toUpperCase();
+}
+function escapeHTML(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+/* 3. 15,000 CONTENT SLOTS
+   These are catalog slots, not completed articles.
+*/
+const slots=[];
+function addSlots(room,category,count,level){
+ for(let i=1;i<=count;i++){
+  slots.push({
+   id:(room==="knowledge"?"K":room==="reading"?"R":"S")+
+       String(slots.length+1).padStart(5,"0"),
+   room,category,level,
+   title:"Content Article "+String(i).padStart(4,"0"),
+   pending:true
+  });
+ }
+}
+knowledgeCategories.forEach(([c,n])=>addSlots("knowledge",c,n,"General"));
+readingCategories.forEach(([c,n])=>
+ addSlots("reading",c,n,c.includes("Basic")?"Basic":"Advanced"));
+storyCategories.forEach(([c,n])=>
+ addSlots("stories",c,n,c.includes("Basic")?"Basic":"Advanced"));
+
+/* 4. SAMPLE FULL ARTICLES */
+const samples=[
+ {
+  id:"K00001",room:"knowledge",category:"Space & Universe",level:"Basic",
+  title:"Our Solar System",
+  desc:"Discover the Sun and the eight planets.",
+  sections:[
+   {en:"The Sun is at the center of our solar system.",my:"နေသည် ကျွန်ုပ်တို့၏ နေအဖွဲ့အစည်း၏ အလယ်ဗဟိုတွင် တည်ရှိသည်။"},
+   {en:"Eight planets orbit the Sun.",my:"ဂြိုဟ်ရှစ်လုံးသည် နေကို လှည့်ပတ်နေကြသည်။"},
+   {en:"Earth is the planet where we live.",my:"ကမ္ဘာသည် ကျွန်ုပ်တို့ နေထိုင်သော ဂြိုဟ်ဖြစ်သည်။"},
+   {en:"Jupiter is the largest planet in our solar system.",my:"ဂျူပီတာသည် ကျွန်ုပ်တို့၏ နေအဖွဲ့အစည်းတွင် အကြီးဆုံးဂြိုဟ်ဖြစ်သည်။"},
+   {en:"Saturn is famous for its beautiful rings.",my:"စနေဂြိုဟ်သည် ၎င်း၏လှပသော အဝိုင်းကွင်းများကြောင့် ထင်ရှားသည်။"}
+  ],
+  vocab:[
+   {word:"Planet",pronunciation:"ပလဲနက်",meaning:"ဂြိုဟ်"},
+   {word:"Orbit",pronunciation:"အော်ဘစ်",meaning:"ပတ်လမ်း"},
+   {word:"Solar System",pronunciation:"ဆိုလာ စစ်စတမ်",meaning:"နေအဖွဲ့အစည်း"},
+   {word:"Universe",pronunciation:"ယူနီဗာ့စ်",meaning:"စကြဝဠာ"}
+  ],
+  grammar:"Present Simple Tense ကို အထွေထွေအမှန်တရားများ ပြောရာတွင် အသုံးပြုသည်။ ဥပမာ - The Earth moves around the Sun.",
+  remember:"The Sun is a star. The eight planets orbit the Sun.",
+  exercise:"1. How many planets are in our solar system? 2. Which planet is the largest?"
+ },
+ {
+  id:"R00001",room:"reading",category:"Basic Reading",level:"Basic",
+  title:"The Importance of Education",
+  desc:"A reading about education and lifelong learning.",
+  sections:[
+   {en:"Education is an important part of human life.",my:"ပညာရေးသည် လူ့ဘဝ၏ အရေးကြီးသော အစိတ်အပိုင်းတစ်ခုဖြစ်သည်။"},
+   {en:"It helps people understand the world around them.",my:"၎င်းသည် လူတို့အား မိမိတို့ပတ်ဝန်းကျင်ရှိ ကမ္ဘာကြီးကို နားလည်စေသည်။"},
+   {en:"Education gives people knowledge and useful skills.",my:"ပညာရေးသည် လူတို့အား အသိပညာနှင့် အသုံးဝင်သော ကျွမ်းကျင်မှုများ ပေးစွမ်းသည်။"},
+   {en:"Learning does not end when we leave school.",my:"ကျောင်းပြီးသွားသောအခါတွင်လည်း သင်ယူမှုသည် မပြီးဆုံးပါ။"},
+   {en:"We can continue learning throughout our lives.",my:"ကျွန်ုပ်တို့သည် ဘဝတစ်လျှောက်လုံး ဆက်လက်သင်ယူနိုင်သည်။"}
+  ],
+  vocab:[
+   {word:"Education",pronunciation:"အက်ဂျူကေးရှင်း",meaning:"ပညာရေး"},
+   {word:"Knowledge",pronunciation:"နော်လစ်ဂျ်",meaning:"အသိပညာ"},
+   {word:"Skill",pronunciation:"စကေးလ်",meaning:"ကျွမ်းကျင်မှု"},
+   {word:"Opportunity",pronunciation:"အော်ပေါ်ကျူနတီ",meaning:"အခွင့်အလမ်း"}
+  ],
+  grammar:"It helps people + base verb ပုံစံကို အသုံးပြုနိုင်သည်။ ဥပမာ - It helps people learn.",
+  remember:"Education is a lifelong journey. Never stop learning.",
+  exercise:"1. Why is education important? 2. Does learning end after school?"
+ },
+ {
+  id:"S00001",room:"stories",category:"Basic Stories",level:"Basic",
+  title:"The Brave Little Bird",
+  desc:"An original fictional story about courage.",
+  sections:[
+   {en:"Once upon a time, there was a little bird named Ruby.",my:"တစ်ခါတုန်းက Ruby ဟု အမည်ရသော ငှက်ကလေးတစ်ကောင် ရှိခဲ့သည်။"},
+   {en:"She lived in a green forest with her family.",my:"သူမသည် မိသားစုနှင့်အတူ စိမ်းလန်းသော တောအုပ်တစ်ခုတွင် နေထိုင်ခဲ့သည်။"},
+   {en:"One day, a strong wind broke a branch near their nest.",my:"တစ်နေ့တွင် လေပြင်းတိုက်ခတ်မှုကြောင့် သူတို့အသိုက်အနီးရှိ သစ်ကိုင်းတစ်ကိုင်း ကျိုးကျသွားသည်။"},
+   {en:"Ruby was afraid, but she decided to help her family.",my:"Ruby သည် ကြောက်ရွံ့နေသော်လည်း မိသားစုကို ကူညီရန် ဆုံးဖြတ်ခဲ့သည်။"},
+   {en:"She found a safer place and guided the little birds there.",my:"သူမသည် ပိုမိုလုံခြုံသောနေရာတစ်ခုကို ရှာဖွေပြီး ငှက်ကလေးများကို ထိုနေရာသို့ လမ်းပြပေးခဲ့သည်။"},
+   {en:"Her family thanked her for being brave.",my:"ရဲရင့်မှုရှိခဲ့သောကြောင့် သူမ၏မိသားစုက ကျေးဇူးတင်ခဲ့ကြသည်။"}
+  ],
+  vocab:[
+   {word:"Brave",pronunciation:"ဘရေ့ဗ်",meaning:"ရဲရင့်သော"},
+   {word:"Forest",pronunciation:"ဖောရစ်",meaning:"တောအုပ်"},
+   {word:"Branch",pronunciation:"ဘရန်ချ်",meaning:"သစ်ကိုင်း"},
+   {word:"Safe",pronunciation:"ဆေ့ဖ်",meaning:"လုံခြုံသော"}
+  ],
+  grammar:"Past Simple Tense ကို အတိတ်တွင် ဖြစ်ပျက်ပြီးဆုံးခဲ့သော အကြောင်းအရာများအတွက် အသုံးပြုသည်။",
+  remember:"Moral: Courage means doing what is right even when we feel afraid. This is a fictional story.",
+  exercise:"1. What was the bird's name? 2. How did Ruby help her family?"
+ }
+];
+samples.forEach(a=>{
+ if(!articles.some(x=>x.id===a.id))articles.push(a);
+});
+persist();
+
+/* 5. NAVIGATION */
+function showPage(id,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+ document.getElementById("sidebar").classList.remove("open");
+ if(id==="home")renderHome();
+ if(id==="dashboard")renderDashboard();
+ if(id==="manage")renderManage();
+ if(id==="bookmarks")renderBookmarks();
+}
+function showRoom(room,button){
+ currentRoom=room;
+ showPage("room",button);
+ const names={knowledge:"Knowledge Room",reading:"Reading Room",stories:"Story Room"};
+ document.getElementById("roomTitle").textContent=names[room];
+ document.getElementById("roomDesc").textContent=
+  room==="knowledge"?"5,000 Knowledge Article Slots":
+  room==="reading"?"Basic 2,500 · Advanced 2,500":
+  "Basic 2,500 · Advanced 2,500";
+ document.getElementById("search").value="";
+ document.getElementById("levelFilter").value="";
+ updateCategoryFilter();
+ renderList(1);
+}
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
+function toggleDark(){
+ document.body.classList.toggle("dark");
+ localStorage.setItem("wai_dark",document.body.classList.contains("dark"));
+}
+if(localStorage.getItem("wai_dark")==="true")document.body.classList.add("dark");
+
+/* 6. CATALOG */
+function getRoomSlots(room){
+ return slots.filter(x=>x.room===room);
+}
+function updateCategoryFilter(){
+ const cats=currentRoom==="knowledge"?knowledgeCategories:
+ currentRoom==="reading"?readingCategories:storyCategories;
+ document.getElementById("categoryFilter").innerHTML=
+ '<option value="">All Categories</option>'+
+ cats.map(c=>`<option>${escapeHTML(c[0])}</option>`).join("");
+}
+function getCombinedRoomItems(room){
+ const slotItems=getRoomSlots(room).map(s=>{
+  const real=articles.find(a=>a.id===s.id);
+  return real||s;
+ });
+ const extra=articles.filter(
